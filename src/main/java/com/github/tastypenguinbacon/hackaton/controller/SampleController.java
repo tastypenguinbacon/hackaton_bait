@@ -60,9 +60,8 @@ public class SampleController {
     @RequestMapping(path = "hello base", produces = MediaType.TEXT_PLAIN_VALUE)
     public String helloBase() {
 
-        //jdbcTemplate.execute("DROP TABLE students IF EXISTS");
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS students " +
-                        "(id SERIAL, name VARCHAR(255), academy VARCHAR(255)) "
+                "(id SERIAL, name VARCHAR(255), academy VARCHAR(255)) "
         );
 
         String student_name = "Josh";
