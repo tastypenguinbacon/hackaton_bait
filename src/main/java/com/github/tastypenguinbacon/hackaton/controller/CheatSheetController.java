@@ -14,7 +14,6 @@ import java.util.List;
  */
 @RestController
 public class CheatSheetController {
-
     @Autowired
     private CheatSheetManager cheatSheets;
 
@@ -24,18 +23,18 @@ public class CheatSheetController {
         return cheatSheets.getAllCheatSheetNames();
     }
 
-    @RequestMapping(value = "/{user}/cheatsheet/{cheatsheetName}",
+    @RequestMapping(value = "/cheatsheet/{cheatsheetName}",
+            produces = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.GET)
-    public String getCheatSheetAccordingToRegex(@RequestParam String like)
+    public CheatSheet getCheatSheetAccordingToRegex(@PathVariable String cheatSheetName, @RequestParam String like)
             throws JsonProcessingException {
-
-        return null;
+        return cheatSheets.getCheatSheet(cheatSheetName, like);
     }
 
     @RequestMapping(value = "/{cheatSheetName}", method = RequestMethod.POST)
-    public String addElementsToCheatSheet(@PathVariable String cheatSheetName,
+    public void addElementsToCheatSheet(@PathVariable String cheatSheetName,
                                           @RequestBody CheatSheet body) {
-        return null;
+        cheatSheets.mergeToCheatSheet(cheatSheetName, body);
     }
 }
 
