@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,9 +23,9 @@ import java.util.List;
 public class CheatSheetManager {
 
     @Autowired
-    public JdbcTemplate jdbcTemplate;
-
-    public void sheetsInitialize () {
+    JdbcTemplate jdbcTemplate;
+/*
+    public CheatSheetManager () {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS cheat_sheet_names " +
                             "(id SERIAL, name VARCHAR(255)) "
         );
@@ -36,12 +37,11 @@ public class CheatSheetManager {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
-    }
+    }*/
 
     public List<String> getAllCheatSheetNames() {
 
-        List<String> cheatSheetNames = new ArrayList<String>();
+        List<String> cheatSheetNames = new LinkedList<>();
 
         jdbcTemplate.query(
             "SELECT id, name FROM cheat_sheet_names",
@@ -78,7 +78,7 @@ public class CheatSheetManager {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS cheat_sheet_names " +
                 "(id SERIAL, name VARCHAR(255))");
 
-        List<String> cheatSheetNames = new ArrayList<String>();
+        List<String> cheatSheetNames = new LinkedList<>();
 
         jdbcTemplate.query(
                 "SELECT id, name FROM cheat_sheet_names",
