@@ -1,8 +1,5 @@
 package com.github.tastypenguinbacon.hackaton;
 
-import com.github.tastypenguinbacon.hackaton.controller.SampleController;
-import com.github.tastypenguinbacon.hackaton.data.CheatSheet;
-import com.github.tastypenguinbacon.hackaton.databaseaccess.CheatSheetManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

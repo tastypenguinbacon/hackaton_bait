@@ -23,7 +23,6 @@ public class CheatSheetManager {
 
     @Autowired
     public JdbcTemplate jdbcTemplate;
-    private ObjectMapper OM = new ObjectMapper();
 
     public void sheetsInitialize () {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS cheat_sheet_names " +
@@ -75,7 +74,7 @@ public class CheatSheetManager {
         }
     }
 
-    public CheatSheet getCheatSheet(String Shett) {
+    public CheatSheet getCheatSheet(String Shett, String like) {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS cheat_sheet_names " +
                 "(id SERIAL, name VARCHAR(255))");
 
