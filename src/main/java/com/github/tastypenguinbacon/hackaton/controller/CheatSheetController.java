@@ -25,9 +25,7 @@ public class CheatSheetController {
     public String addElementsToCheatSheet(@PathVariable String cheatSheetName,
                                           @RequestBody CheatSheet body) {
         DataBaseConnection db = new DataBaseConnection();
-        System.out.println(cheatSheetName);
-        System.out.println(body);
-        boolean successful = db.addCheatSheet(body);
+        boolean successful = db.addCheatSheet(cheatSheetName, body);
         return successful ? "SUCCESS" : "FAIL";
     }
 }

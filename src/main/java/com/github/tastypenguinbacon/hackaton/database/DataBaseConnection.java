@@ -15,8 +15,7 @@ public class DataBaseConnection {
         return cheatSheet;
     }
 
-    public boolean addCheatSheet(CheatSheet body) {
-
+    public boolean addCheatSheet(String cheatSheetName, CheatSheet body) {
         return false;
     }
 }
