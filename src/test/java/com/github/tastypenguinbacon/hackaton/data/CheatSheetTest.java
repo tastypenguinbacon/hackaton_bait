@@ -29,7 +29,7 @@ public class CheatSheetTest {
     @Test
     public void whenGivenAValidJsonIsAbleToSerialize() throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
-        String validJson = "[{\"question\":\"0\",\"answer\":\"0\"},{\"question\":\"1\",\"answer\":\"1\"},{\"question\":\"2\",\"answer\":\"10\"}]";
+        String validJson = "{\"cheatSheet\":[{\"question\":\"0\",\"answer\":\"0\"},{\"question\":\"1\",\"answer\":\"1\"},{\"question\":\"2\",\"answer\":\"10\"}]}";
         CheatSheet cheatSheet = objectMapper.readValue(validJson, CheatSheet.class);
         System.out.println(cheatSheet);
     }
