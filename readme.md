@@ -1,0 +1,2 @@
+POST    /user/cheat_sheet/{cheatSheetName}  application/json    - sends data to update the database cheat sheet database
+GET     /cheat_sheet/{cheatSheetName}?like= application/json    - retrieves matching data from the database
