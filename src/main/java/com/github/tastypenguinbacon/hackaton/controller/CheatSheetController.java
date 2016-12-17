@@ -2,6 +2,9 @@ package com.github.tastypenguinbacon.hackaton.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tastypenguinbacon.hackaton.data.CheatSheet;
+import com.github.tastypenguinbacon.hackaton.databaseaccess.CheatSheetManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,15 +15,20 @@ import java.util.List;
 @RestController
 public class CheatSheetController {
 
-    @RequestMapping(value = "/cheat_sheet", method = RequestMethod.GET)
+    @Autowired
+    private CheatSheetManager cheatSheets;
+
+    @RequestMapping(value = "/cheat_sheet", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> getCheatSheetNames() {
-        return null;
+        return cheatSheets.getAllCheatSheetNames();
     }
 
     @RequestMapping(value = "/{user}/cheat_sheet/{cheatsheetName}",
             method = RequestMethod.GET)
     public String getCheatSheetAccordingToRegex(@RequestParam String like)
             throws JsonProcessingException {
+
         return null;
     }
 
@@ -30,3 +38,4 @@ public class CheatSheetController {
         return null;
     }
 }
+
