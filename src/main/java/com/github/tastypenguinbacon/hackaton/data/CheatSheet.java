@@ -17,6 +17,14 @@ public class CheatSheet implements Serializable {
     public CheatSheet() {
     }
 
+    public CheatSheet( List<CheatSheetElement> CSEL) {
+        cheatSheet = CSEL;
+    }
+
+    public List<CheatSheetElement> getcheatSheetList () {
+        return cheatSheet;
+    }
+
     public void addAnotherCheatEntry(String question, String answer) {
         Objects.nonNull(question);
         Objects.nonNull(answer);

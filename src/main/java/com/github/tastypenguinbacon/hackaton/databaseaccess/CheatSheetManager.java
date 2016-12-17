@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import static com.github.tastypenguinbacon.hackaton.data.CheatSheet.CheatSheetElement;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +30,6 @@ public class CheatSheetManager {
                             "(id SERIAL, name VARCHAR(255)) "
         );
 
-        List<CheatSheetElement> cheatSheet = new ArrayList<CheatSheetElement>();
-
         CheatSheetElement temp = new CheatSheetElement("What is BCD?", "Binary coded decimal.");
 
         try {
@@ -44,7 +45,7 @@ public class CheatSheetManager {
         List<String> cheatSheetNames = new ArrayList<String>();
 
         jdbcTemplate.query(
-            "SELECT id, name, academy FROM cheat_sheet_names",
+            "SELECT id, name FROM cheat_sheet_names",
             (rs, rowNum) -> new String(rs.getString("name"))).forEach(String -> cheatSheetNames.add(String));
 
         return cheatSheetNames;
@@ -52,15 +53,47 @@ public class CheatSheetManager {
 
     public void mergeToCheatSheet(String name, CheatSheet cs) {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + name +
-                "(id SERIAL, question VARCHAR(255), academy VARCHAR(255)) "
+                "(id SERIAL, question VARCHAR(255), answer VARCHAR(255)) "
         );
+
+        PreparedStatement stmt = null;
+        Connection conn = null;
+        javax.sql.DataSource DS = jdbcTemplate.getDataSource();
+
+        for ( CheatSheetElement CSE: cs.getcheatSheetList()) {
+            String question = CSE.getQuestion();
+            String answer = CSE.getAnswer();
+            try {
+                conn = DS.getConnection();
+                stmt = conn.prepareStatement("INSERT INTO " + name + " (question, answer ) VALUES (?,?)");
+                stmt.setString(1, question);
+                stmt.setString(2, answer);
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public void queryShett (String Shett) {
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS cheatsheet1 " +
-                "(id SERIAL, question VARCHAR(255), academy VARCHAR(255)) "
-        );
+    public CheatSheet getCheatSheet(String Shett) {
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS cheat_sheet_names " +
+                "(id SERIAL, name VARCHAR(255))");
+
+        List<String> cheatSheetNames = new ArrayList<String>();
+
+        jdbcTemplate.query(
+                "SELECT id, name FROM cheat_sheet_names",
+                (rs, rowNum) -> new String(rs.getString("name"))).forEach(String -> cheatSheetNames.add(String));
+
+        List<CheatSheetElement> CSEL = new ArrayList<CheatSheetElement>();
+        if (cheatSheetNames.contains(Shett))
+        {
+            jdbcTemplate.query(
+                    "SELECT id, name FROM " + Shett,
+                    (rs, rowNum) -> new CheatSheetElement(rs.getString("question"), rs.getString("qnswer"))).forEach(CheatSheetElement -> CSEL.add(CheatSheetElement));
+        }
+
+        CheatSheet CS = new CheatSheet(CSEL);
+        return CS;
     }
-
-
 }
