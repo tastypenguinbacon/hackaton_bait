@@ -18,13 +18,13 @@ public class CheatSheetController {
     @Autowired
     private CheatSheetManager cheatSheets;
 
-    @RequestMapping(value = "/cheat_sheet", method = RequestMethod.GET,
+    @RequestMapping(value = "/cheatsheet", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> getCheatSheetNames() {
         return cheatSheets.getAllCheatSheetNames();
     }
 
-    @RequestMapping(value = "/{user}/cheat_sheet/{cheatsheetName}",
+    @RequestMapping(value = "/{user}/cheatsheet/{cheatsheetName}",
             method = RequestMethod.GET)
     public String getCheatSheetAccordingToRegex(@RequestParam String like)
             throws JsonProcessingException {
