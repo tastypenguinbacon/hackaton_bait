@@ -20,6 +20,7 @@ public class CheatSheetController {
     @RequestMapping(value = "/cheatsheet", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> getCheatSheetNames() {
+        cheatSheets.initializeDataBase();
         return cheatSheets.getAllCheatSheetNames();
     }
 

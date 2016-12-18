@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import static com.github.tastypenguinbacon.hackaton.data.CheatSheet.CheatSheetElement;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -24,22 +26,50 @@ public class CheatSheetManager {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
-/*
-    public CheatSheetManager () {
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS cheat_sheet_names " +
+
+    private String cheatSheetTableName = "cheat_sheet_names";
+    private String firtsCheatSheetName = "cheatshett_1";
+
+    public void initializeDataBase () {
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS  " + cheatSheetTableName +
                             "(id SERIAL, name VARCHAR(255)) "
         );
 
         CheatSheetElement temp = new CheatSheetElement("What is BCD?", "Binary coded decimal.");
 
+        //jdbcTemplate.execute("INSERT INTO " + cheatSheetTableName + "(name) VALUES (?)", firtsCheatSheetName);
+
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + firtsCheatSheetName +
+                "(id SERIAL, question VARCHAR(255), answer VARCHAR(255)) ");
+
+        // insert firstCheatSheetName
+
+
+        String question;
+        String answer;
+        PreparedStatement stmt = null;
+        Connection conn = null;
+        javax.sql.DataSource DS = jdbcTemplate.getDataSource();
+
         try {
-            String serialized = new ObjectMapper().writeValueAsString(temp);
+            ObjectMapper mapper = new ObjectMapper();
+            String serialized = mapper.writeValueAsString(temp);
+            mapper.writeValue(new File("cheatsheet1.json"), serialized);
+            question = mapper.readValue(new File("cheatsheet1.json"), String.class);
+            answer = mapper.readValue(new File("cheatsheet1.json"), String.class);
+            conn = DS.getConnection();
+            stmt = conn.prepareStatement("INSERT INTO " + firtsCheatSheetName + " (question, answer ) VALUES (?,?)");
+            stmt.setString(1, question);
+            stmt.setString(2, answer);
+            stmt.executeUpdate();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    }*/
-
-    private String cheatSheetTableName = "cheat_sheet_names";
+    }
 
     public List<String> getAllCheatSheetNames() {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + cheatSheetTableName +
@@ -92,7 +122,7 @@ public class CheatSheetManager {
         if (cheatSheetNames.contains(Shett))
         {
             jdbcTemplate.query(
-                    "SELECT id, name FROM " + Shett,
+                    "SELECT id, naqme FROM " + Shett,
                     (rs, rowNum) -> new CheatSheetElement(rs.getString("question"), rs.getString("qnswer"))).forEach(CheatSheetElement -> CSEL.add(CheatSheetElement));
         }
 
