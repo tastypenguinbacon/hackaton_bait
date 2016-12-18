@@ -39,12 +39,16 @@ public class CheatSheetManager {
         }
     }*/
 
+    private String cheatSheetTableName = "cheat_sheet_names";
+
     public List<String> getAllCheatSheetNames() {
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + cheatSheetTableName +
+                "(id SERIAL, name VARCHAR(255))");
 
         List<String> cheatSheetNames = new LinkedList<>();
 
         jdbcTemplate.query(
-            "SELECT id, name FROM cheat_sheet_names",
+            "SELECT id, name FROM " + cheatSheetTableName,
             (rs, rowNum) -> new String(rs.getString("name"))).forEach(String -> cheatSheetNames.add(String));
 
         return cheatSheetNames;
@@ -75,13 +79,13 @@ public class CheatSheetManager {
     }
 
     public CheatSheet getCheatSheet(String Shett, String like) {
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS cheat_sheet_names " +
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS " + cheatSheetTableName +
                 "(id SERIAL, name VARCHAR(255))");
 
         List<String> cheatSheetNames = new LinkedList<>();
 
         jdbcTemplate.query(
-                "SELECT id, name FROM cheat_sheet_names",
+                "SELECT id, name FROM " + cheatSheetTableName,
                 (rs, rowNum) -> new String(rs.getString("name"))).forEach(String -> cheatSheetNames.add(String));
 
         List<CheatSheetElement> CSEL = new ArrayList<CheatSheetElement>();
